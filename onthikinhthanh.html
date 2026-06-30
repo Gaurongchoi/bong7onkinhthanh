@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vượt Ải Kinh Thánh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tmg-primary': '#882436', // Màu chủ đạo từ logo
+                        'tmg-light': '#a63448',
+                        'tmg-dark': '#661927',
+                        'tmg-bg': '#fcf0f2'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .coin-animation {
+            animation: bounceCoin 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes bounceCoin {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(-5px) scale(1.1); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hide { display: none !important; }
+        
+        /* Custom radio button styles for Game 1 */
+        .option-radio:checked + label {
+            background-color: #fcf0f2;
+            border-color: #882436;
+            color: #882436;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col items-center py-6 px-4 md:px-0">
+
+    <header class="w-full max-w-3xl flex justify-between items-center mb-8">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="returnToMenu()">
+            <div class="bg-white p-1 rounded-xl shadow-md h-12 w-12 flex items-center justify-center">
+                <img src="bong7-05.png" alt="TMG Logo" class="h-10 w-10 object-contain">
+            </div>
+            <h1 class="text-2xl font-extrabold text-tmg-primary tracking-tight">
+                Vượt Ải Kinh Thánh
+            </h1>
+        </div>
+        <div id="status-bar" class="hide flex space-x-4">
+            <div class="glass-panel px-4 py-2 rounded-full font-bold flex items-center space-x-2 border-amber-200">
+                <i class="fa-solid fa-coins text-amber-500 coin-animation"></i>
+                <span id="display-talents" class="text-amber-600 text-lg">5</span>
+            </div>
+            <div class="glass-panel px-4 py-2 rounded-full font-bold flex items-center space-x-2 border-emerald-200 hide" id="score-container">
+                <i class="fa-solid fa-star text-emerald-500"></i>
+                <span id="display-score" class="text-emerald-600 text-lg">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-3xl flex-1 flex flex-col relative">
+        
+        <!-- MENU SCREEN -->
+        <div id="screen-menu" class="glass-panel rounded-3xl p-8 md:p-12 text-center fade-in flex-1 flex flex-col justify-center">
+            <h2 class="text-3xl font-bold mb-4 text-slate-800">Chọn Thử Thách Của Bạn</h2>
+            <p class="text-slate-500 mb-10 text-lg">Hệ thống hóa kiến thức để ghi nhớ sâu 43 câu hỏi ôn tập.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Game 1 Card -->
+                <div class="border-2 border-tmg-light/20 bg-white rounded-2xl p-6 hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group" onclick="startGame1()">
+                    <div class="w-16 h-16 bg-tmg-bg text-tmg-primary rounded-full flex items-center justify-center text-3xl mx-auto mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Đường Đua Ta-Lâng</h3>
+                    <p class="text-sm text-slate-500 mb-4 h-16">Ôn lại trắc nghiệm chi tiết. Đặt cược Ta-lâng để nhân đôi tài sản, cẩn thận kẻo trắng tay!</p>
+                    <button class="w-full py-3 bg-tmg-primary hover:bg-tmg-dark text-white font-semibold rounded-xl transition-colors">
+                        Chơi Ngay (15 Phút)
+                    </button>
+                </div>
+
+                <!-- Game 2 Card -->
+                <div class="border-2 border-tmg-light/20 bg-white rounded-2xl p-6 hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer group" onclick="startGame2()">
+                    <div class="w-16 h-16 bg-tmg-bg text-tmg-primary rounded-full flex items-center justify-center text-3xl mx-auto mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Mật Mã Ẩn Dụ</h3>
+                    <p class="text-sm text-slate-500 mb-4 h-16">Bỏ qua trắc nghiệm. Dùng 3 từ khóa để tìm ra tên bài học. Nhấn chuông chớp nhoáng!</p>
+                    <button class="w-full py-3 bg-tmg-primary hover:bg-tmg-dark text-white font-semibold rounded-xl transition-colors">
+                        Chơi Ngay (15 Phút)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME 1 SCREEN -->
+        <div id="screen-game1" class="hide flex-1 flex flex-col">
+            <div class="flex justify-between items-center mb-4 px-2">
+                <span class="text-slate-500 font-semibold uppercase tracking-wider text-sm" id="g1-progress">Câu 1/10</span>
+                <span class="text-xs bg-tmg-bg text-tmg-primary px-2 py-1 rounded-full font-bold">GAME 1</span>
+            </div>
+            
+            <div class="glass-panel rounded-3xl p-6 md:p-8 flex-1 flex flex-col fade-in">
+                <h3 id="g1-question" class="text-xl md:text-2xl font-bold leading-tight mb-6 text-slate-800">
+                    Nội dung câu hỏi sẽ hiển thị ở đây?
+                </h3>
+                
+                <!-- Options -->
+                <div id="g1-options" class="space-y-3 mb-8">
+                    <!-- Radio inputs generated by JS -->
+                </div>
+                
+                <div class="mt-auto">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-slate-700">Mức Cược:</span>
+                            <span id="g1-bet-display" class="font-bold text-amber-600 text-lg">1 Ta-lâng</span>
+                        </div>
+                        <input type="range" id="g1-bet-slider" min="1" max="5" value="1" class="w-full h-2 bg-amber-200 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                        <div class="flex justify-between text-xs text-slate-400 mt-2 font-semibold">
+                            <span>1</span>
+                            <span>ALL IN</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="submitGame1()" class="w-full py-4 bg-gradient-to-r from-tmg-light to-tmg-primary hover:from-tmg-primary hover:to-tmg-dark text-white font-bold text-lg rounded-xl shadow-lg transition-transform active:scale-95">
+                        Chốt Đáp Án & Đặt Cược
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME 2 SCREEN -->
+        <div id="screen-game2" class="hide flex-1 flex flex-col">
+            <div class="flex justify-between items-center mb-4 px-2">
+                <span class="text-slate-500 font-semibold uppercase tracking-wider text-sm" id="g2-progress">Vòng 1/8</span>
+                <span class="text-xs bg-tmg-bg text-tmg-primary px-2 py-1 rounded-full font-bold">GAME 2</span>
+            </div>
+
+            <div class="glass-panel rounded-3xl p-6 md:p-8 flex-1 flex flex-col fade-in">
+                <div class="text-center mb-6">
+                    <h3 class="text-lg text-slate-500 font-semibold mb-2">Từ khóa gợi ý:</h3>
+                    
+                    <div class="flex flex-col space-y-3 mb-6">
+                        <div id="kw-1" class="kw-box bg-slate-100 border-2 border-slate-200 rounded-xl p-4 font-bold text-xl text-slate-400 flex justify-center items-center h-16 transition-all">
+                            <span class="text-sm"><i class="fa-solid fa-lock mr-2"></i>Mở bằng 30 điểm</span>
+                        </div>
+                        <div id="kw-2" class="kw-box bg-slate-100 border-2 border-slate-200 rounded-xl p-4 font-bold text-xl text-slate-400 flex justify-center items-center h-16 transition-all">
+                            <span class="text-sm"><i class="fa-solid fa-lock mr-2"></i>Mở bằng 20 điểm</span>
+                        </div>
+                        <div id="kw-3" class="kw-box bg-slate-100 border-2 border-slate-200 rounded-xl p-4 font-bold text-xl text-slate-400 flex justify-center items-center h-16 transition-all">
+                            <span class="text-sm"><i class="fa-solid fa-lock mr-2"></i>Mở bằng 10 điểm</span>
+                        </div>
+                    </div>
+
+                    <button id="btn-reveal" onclick="revealNextKeyword()" class="px-6 py-2 bg-tmg-primary text-white rounded-full font-semibold hover:bg-tmg-dark shadow-md">
+                        <i class="fa-solid fa-eye mr-2"></i> Mở từ khóa tiếp theo
+                    </button>
+                </div>
+                
+                <div class="mt-auto">
+                    <p class="font-bold text-slate-700 mb-3 text-center">Đáp án là gì?</p>
+                    <div id="g2-options" class="grid grid-cols-2 gap-2">
+                        <!-- Buttons generated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CUSTOM MODAL (Replaces alert/confirm) -->
+    <div id="custom-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hide flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl transform scale-95 transition-transform" id="modal-content">
+            <div id="modal-icon" class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-info"></i>
+            </div>
+            <h3 id="modal-title" class="text-2xl font-bold text-center mb-2">Title</h3>
+            <p id="modal-desc" class="text-slate-600 text-center mb-6 text-lg">Description goes here</p>
+            <div id="modal-action-area" class="text-center font-bold text-xl mb-6">
+                <!-- Points/Talents change -->
+            </div>
+            <button id="modal-btn" onclick="closeModal()" class="w-full py-3 text-white font-bold rounded-xl shadow-md">
+                Tiếp Tục
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA DEFINITION ---
+        const game1Data = [
+            {
+                q: "Theo Ma-thi-ơ 5:14-16, bản chất thật của Cơ-đốc nhân đối với thế gian là gì?",
+                opts: ["Người đi tìm kiếm sự sáng", "Những người ẩn dật", "Muối của đất và sự sáng của thế gian", "Người chỉ soi sáng trong nhà thờ"],
+                ans: 2
+            },
+            {
+                q: "Trong tiếng Hy-lạp, từ ngữ nào chỉ về việc lành/tốt mang ý nghĩa tốt về phẩm chất, có sức hấp dẫn và tầm ảnh hưởng?",
+                opts: ["Phos", "Kalos", "Logos", "Agathos"],
+                ans: 1
+            },
+            {
+                q: "Chúa Giê-xu bảo đừng mời bạn hữu, anh em, bà con giàu có vì lý do gì?",
+                opts: ["Vì Chúa không muốn ta yêu gia đình", "Vì họ sẽ mời lại và trả ơn cho chúng ta", "Vì họ ăn quá nhiều", "Vì họ không cần ăn uống"],
+                ans: 1
+            },
+            {
+                q: "Trong Ma-thi-ơ 13:47-50, Nước Thiên Đàng được Chúa Giê-xu ví sánh với hình ảnh nào?",
+                opts: ["Người đi gieo giống lúa mì", "Hạt cải nhỏ mọc thành cây lớn", "Viên ngọc tốt", "Một tay lưới thả xuống biển bắt đủ mọi thứ cá"],
+                ans: 3
+            },
+            {
+                q: "Sự khác biệt cốt yếu giữa 5 người nữ khôn và 5 người nữ dại là gì?",
+                opts: ["Khôn có mang thêm dầu, dại thì không", "Khôn đến nơi sớm hơn", "Khôn có đèn đẹp hơn", "Khôn không ngủ quên"],
+                ans: 0
+            },
+            {
+                q: "Sai lầm cốt lõi dẫn đến số phận bi thảm của người quản gia bất trung là gì?",
+                opts: ["Không đủ thức ăn phát lương phạn", "Nghĩ sai rằng: 'Chủ ta chậm đến'", "Đầy tớ không vâng lời", "Quản lý gia tài quá kém"],
+                ans: 1
+            },
+            {
+                q: "Từ 'Ma-môn' trong tiếng A-ram có nghĩa là gì?",
+                opts: ["Danh vọng", "Ma quỷ", "Của cải, tiền bạc", "Sự kiêu ngạo"],
+                ans: 2
+            },
+            {
+                q: "Câu nói 'Chúng tôi là đầy tớ vô ích' có ý nghĩa sâu xa là gì?",
+                opts: ["Hoàn toàn không làm được việc gì", "Chủ tôi không nợ tôi điều gì (làm vì bổn phận)", "Chúng tôi bất tài", "Chủ nợ chúng tôi bữa ăn"],
+                ans: 1
+            },
+            {
+                q: "Làm sao để giữ gìn thân thể/ linh hồn không để tà ma chiếm hữu?",
+                opts: ["Chống trả ma quỷ, đừng cho nhân dịp", "Đặt Chúa làm chủ cuộc đời", "Cả A và B đều đúng", "Chỉ cần đi nhà thờ đều đặn"],
+                ans: 2
+            },
+            {
+                q: "Dựa vào Ga-la-ti 3:11, một người được xưng công bình trước mặt Chúa là bởi điều gì?",
+                opts: ["Luật pháp", "Việc làm", "Đức tin", "Sự dâng hiến"],
+                ans: 2
+            }
+        ];
+
+        const game2Data = [
+            { kws: ["Đi cày về", "Phục vụ chủ ăn", "Đầy tớ vô ích"], ans: "Nhiệm Vụ Đầy Tớ" },
+            { kws: ["Đào lỗ", "Đi đường xa", "Tính sổ"], ans: "Các Ta-lâng" },
+            { kws: ["Dầu", "Ngủ gục", "Không biết các ngươi đâu"], ans: "Mười Nữ Đồng Trinh" },
+            { kws: ["Bên hữu bên tả", "Người hèn mọn", "Ngạc nhiên"], ans: "Chiên Và Dê" },
+            { kws: ["Chủ chậm đến", "Giảm nợ", "Của bất nghĩa"], ans: "Quản Gia Bất Trung" },
+            { kws: ["Nổi giận", "Chết mà sống lại", "Ở ngoài đồng"], ans: "Con Trai Hoang Đàng" },
+            { kws: ["Khuấy rầy", "Ba cách đáp lời", "Không nản lòng"], ans: "Quan Án / Cầu Nguyện" },
+            { kws: ["Quét sạch", "Trống không", "Lánh xa anh em"], ans: "Tà Linh / Chống Ma Quỷ" }
+        ];
+
+        const game2Options = [
+            "Các Ta-lâng", "Mười Nữ Đồng Trinh", "Quản Gia Bất Trung", "Nhiệm Vụ Đầy Tớ", 
+            "Chiên Và Dê", "Con Trai Hoang Đàng", "Quan Án / Cầu Nguyện", "Tà Linh / Chống Ma Quỷ",
+            "Tay Lưới", "Sự Sáng Thế Gian"
+        ];
+
+        // --- STATE VARIABLES ---
+        let talents = 5;
+        let score = 0;
+        let currentG1Index = 0;
+        let currentG2Index = 0;
+        let kwsRevealed = 0;
+        let modalCallback = null;
+
+        // --- DOM ELEMENTS ---
+        const screens = {
+            menu: document.getElementById('screen-menu'),
+            game1: document.getElementById('screen-game1'),
+            game2: document.getElementById('screen-game2')
+        };
+        const statusBar = document.getElementById('status-bar');
+        const displayTalents = document.getElementById('display-talents');
+        const scoreContainer = document.getElementById('score-container');
+        const displayScore = document.getElementById('display-score');
+        const modal = document.getElementById('custom-modal');
+
+        // --- UTILITY FUNCTIONS ---
+        function switchScreen(screenName) {
+            Object.values(screens).forEach(s => s.classList.add('hide'));
+            screens[screenName].classList.remove('hide');
+            
+            if (screenName === 'menu') {
+                statusBar.classList.add('hide');
+            } else {
+                statusBar.classList.remove('hide');
+            }
+        }
+
+        function returnToMenu() {
+            switchScreen('menu');
+        }
+
+        function showModal(type, title, desc, actionHtml, btnText, btnColor, callback) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-action-area').innerHTML = actionHtml;
+            
+            const btn = document.getElementById('modal-btn');
+            btn.innerText = btnText;
+            btn.className = `w-full py-3 text-white font-bold rounded-xl shadow-md ${btnColor}`;
+            
+            const icon = document.getElementById('modal-icon');
+            if (type === 'success') {
+                icon.className = "w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 bg-emerald-100 text-emerald-500";
+                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else if (type === 'error') {
+                icon.className = "w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 bg-rose-100 text-rose-500";
+                icon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            } else {
+                icon.className = "w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 bg-tmg-bg text-tmg-primary";
+                icon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+            }
+
+            modalCallback = callback;
+            modal.classList.remove('hide');
+            document.getElementById('modal-content').classList.remove('scale-95');
+            document.getElementById('modal-content').classList.add('scale-100');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-content').classList.remove('scale-100');
+            document.getElementById('modal-content').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hide');
+                if (modalCallback) {
+                    const tempCallback = modalCallback;
+                    modalCallback = null; // Xóa callback cũ TRƯỚC KHI gọi hàm mới để tránh xung đột
+                    tempCallback();
+                }
+            }, 150);
+        }
+
+        function updateStatus() {
+            displayTalents.innerText = talents;
+            displayScore.innerText = score;
+        }
+
+        // --- GAME 1: ĐƯỜNG ĐUA TA-LÂNG ---
+        const betSlider = document.getElementById('g1-bet-slider');
+        const betDisplay = document.getElementById('g1-bet-display');
+        
+        betSlider.addEventListener('input', (e) => {
+            betDisplay.innerText = `${e.target.value} Ta-lâng`;
+        });
+
+        function startGame1() {
+            talents = 5;
+            currentG1Index = 0;
+            scoreContainer.classList.add('hide');
+            updateStatus();
+            switchScreen('game1');
+            loadG1Question();
+        }
+
+        function loadG1Question() {
+            if (currentG1Index >= game1Data.length) {
+                showModal('info', 'Hoàn Thành!', 'Bạn đã hoàn thành Đường Đua Ta-lâng!', 
+                          `<div class="text-amber-500"><i class="fa-solid fa-coins"></i> Tổng tài sản: ${talents} Ta-lâng</div>`, 
+                          'Về Trang Chủ', 'bg-tmg-primary hover:bg-tmg-dark', returnToMenu);
+                return;
+            }
+
+            const data = game1Data[currentG1Index];
+            document.getElementById('g1-progress').innerText = `Câu ${currentG1Index + 1}/${game1Data.length}`;
+            document.getElementById('g1-question').innerText = data.q;
+            
+            const optionsDiv = document.getElementById('g1-options');
+            optionsDiv.innerHTML = '';
+            
+            data.opts.forEach((opt, idx) => {
+                optionsDiv.innerHTML += `
+                    <div class="relative">
+                        <input type="radio" name="g1-ans" id="opt-${idx}" value="${idx}" class="option-radio hidden">
+                        <label for="opt-${idx}" class="block w-full p-4 border-2 border-slate-200 rounded-xl cursor-pointer font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                            ${opt}
+                        </label>
+                    </div>
+                `;
+            });
+
+            // Reset bet slider
+            betSlider.max = Math.max(1, talents);
+            betSlider.value = 1;
+            betDisplay.innerText = "1 Ta-lâng";
+        }
+
+        function submitGame1() {
+            if (currentG1Index >= game1Data.length) return; // Chốt chặn an toàn
+
+            const selected = document.querySelector('input[name="g1-ans"]:checked');
+            if (!selected) {
+                showModal('error', 'Cảnh báo', 'Vui lòng chọn 1 đáp án trước khi chốt!', '', 'Đã hiểu', 'bg-slate-800 hover:bg-slate-700', null);
+                return;
+            }
+
+            const bet = parseInt(betSlider.value);
+            const ansIdx = parseInt(selected.value);
+            const correctIdx = game1Data[currentG1Index].ans;
+
+            if (ansIdx === correctIdx) {
+                talents += bet; // Double the bet (return bet + profit) -> net is +bet
+                updateStatus();
+                showModal('success', 'Chính Xác!', 'Bạn đã trả lời đúng.', 
+                          `<div class="text-emerald-500">+${bet} Ta-lâng</div>`, 
+                          'Tiếp Tục', 'bg-emerald-500 hover:bg-emerald-600', nextG1);
+            } else {
+                talents -= bet;
+                if (talents <= 0) {
+                    talents = 1; // Charity logic
+                    updateStatus();
+                    showModal('error', 'Sai Rồi!', `Đáp án đúng là: ${game1Data[currentG1Index].opts[correctIdx]}`, 
+                              `<div class="text-rose-500">Trắng tay! Hệ thống cấp 1 Ta-lâng từ thiện.</div>`, 
+                              'Ngậm ngùi đi tiếp', 'bg-rose-500 hover:bg-rose-600', nextG1);
+                } else {
+                    updateStatus();
+                    showModal('error', 'Sai Rồi!', `Đáp án đúng là: ${game1Data[currentG1Index].opts[correctIdx]}`, 
+                              `<div class="text-rose-500">-${bet} Ta-lâng</div>`, 
+                              'Tiếp Tục', 'bg-rose-500 hover:bg-rose-600', nextG1);
+                }
+            }
+        }
+
+        function nextG1() {
+            currentG1Index++;
+            loadG1Question();
+        }
+
+        // --- GAME 2: MẬT MÃ ẨN DỤ ---
+        function startGame2() {
+            score = 0;
+            currentG2Index = 0;
+            scoreContainer.classList.remove('hide');
+            updateStatus();
+            
+            // Build options grid once
+            const optsDiv = document.getElementById('g2-options');
+            optsDiv.innerHTML = '';
+            game2Options.forEach(opt => {
+                optsDiv.innerHTML += `
+                    <button onclick="submitGame2('${opt}')" class="p-3 border-2 border-tmg-light/30 bg-white text-tmg-primary font-semibold rounded-xl text-sm hover:bg-tmg-bg hover:border-tmg-light transition-colors shadow-sm">
+                        ${opt}
+                    </button>
+                `;
+            });
+
+            switchScreen('game2');
+            loadG2Round();
+        }
+
+        function loadG2Round() {
+            if (currentG2Index >= game2Data.length) {
+                showModal('info', 'Hoàn Thành!', 'Bạn đã giải mã xong Mật Mã Ẩn Dụ!', 
+                          `<div class="text-emerald-500"><i class="fa-solid fa-star"></i> Tổng điểm: ${score}</div>`, 
+                          'Về Trang Chủ', 'bg-tmg-primary hover:bg-tmg-dark', returnToMenu);
+                return;
+            }
+
+            kwsRevealed = 0;
+            document.getElementById('g2-progress').innerText = `Vòng ${currentG2Index + 1}/${game2Data.length}`;
+            
+            // Reset UI
+            for(let i=1; i<=3; i++) {
+                const kwBox = document.getElementById(`kw-${i}`);
+                kwBox.className = "kw-box bg-slate-100 border-2 border-slate-200 rounded-xl p-4 font-bold text-xl text-slate-400 flex justify-center items-center h-16 transition-all";
+                
+                let pt = (i===1)? 30 : (i===2)? 20 : 10;
+                kwBox.innerHTML = `<span class="text-sm"><i class="fa-solid fa-lock mr-2"></i>Mở bằng ${pt} điểm</span>`;
+            }
+            document.getElementById('btn-reveal').classList.remove('hide');
+            
+            // Reveal first immediately
+            revealNextKeyword();
+        }
+
+        function revealNextKeyword() {
+            if (kwsRevealed >= 3) return;
+            
+            kwsRevealed++;
+            const data = game2Data[currentG2Index];
+            const kwBox = document.getElementById(`kw-${kwsRevealed}`);
+            
+            kwBox.className = "kw-box bg-tmg-bg border-2 border-tmg-light/50 rounded-xl p-4 font-bold text-xl text-tmg-primary flex justify-center items-center h-16 shadow-inner fade-in";
+            kwBox.innerHTML = data.kws[kwsRevealed - 1];
+
+            if (kwsRevealed === 3) {
+                document.getElementById('btn-reveal').classList.add('hide');
+            }
+        }
+
+        function submitGame2(selectedAnswer) {
+            if (currentG2Index >= game2Data.length) return; // Chốt chặn an toàn
+
+            const correctAnswer = game2Data[currentG2Index].ans;
+            
+            if (selectedAnswer === correctAnswer) {
+                let pts = (kwsRevealed === 1) ? 30 : (kwsRevealed === 2) ? 20 : 10;
+                score += pts;
+                updateStatus();
+                showModal('success', 'Tuyệt Vời!', `Chính xác! Đáp án là: ${correctAnswer}`, 
+                          `<div class="text-emerald-500">+${pts} Điểm (Mở ${kwsRevealed} từ khóa)</div>`, 
+                          'Vòng Tiếp Theo', 'bg-emerald-500 hover:bg-emerald-600', nextG2);
+            } else {
+                score -= 10;
+                if(score < 0) score = 0;
+                updateStatus();
+                showModal('error', 'Sai Rồi!', `Rất tiếc. Đáp án đúng là: ${correctAnswer}`, 
+                          `<div class="text-rose-500">-10 Điểm</div>`, 
+                          'Vòng Tiếp Theo', 'bg-rose-500 hover:bg-rose-600', nextG2);
+            }
+        }
+
+        function nextG2() {
+            currentG2Index++;
+            loadG2Round();
+        }
+
+    </script>
+</body>
+</html>
