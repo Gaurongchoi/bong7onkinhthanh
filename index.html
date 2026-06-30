@@ -115,7 +115,7 @@
         <!-- GAME 1 SCREEN -->
         <div id="screen-game1" class="hide flex-1 flex flex-col">
             <div class="flex justify-between items-center mb-4 px-2">
-                <span class="text-slate-500 font-semibold uppercase tracking-wider text-sm" id="g1-progress">Câu 1/10</span>
+                <span class="text-slate-500 font-semibold uppercase tracking-wider text-sm" id="g1-progress">Câu 1/15</span>
                 <span class="text-xs bg-tmg-bg text-tmg-primary px-2 py-1 rounded-full font-bold">GAME 1</span>
             </div>
             
@@ -188,7 +188,7 @@
 
     </main>
 
-    <!-- CUSTOM MODAL (Replaces alert/confirm) -->
+    <!-- CUSTOM MODAL -->
     <div id="custom-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hide flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl transform scale-95 transition-transform" id="modal-content">
             <div id="modal-icon" class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
@@ -196,9 +196,7 @@
             </div>
             <h3 id="modal-title" class="text-2xl font-bold text-center mb-2">Title</h3>
             <p id="modal-desc" class="text-slate-600 text-center mb-6 text-lg">Description goes here</p>
-            <div id="modal-action-area" class="text-center font-bold text-xl mb-6">
-                <!-- Points/Talents change -->
-            </div>
+            <div id="modal-action-area" class="text-center font-bold text-xl mb-6"></div>
             <button id="modal-btn" onclick="closeModal()" class="w-full py-3 text-white font-bold rounded-xl shadow-md">
                 Tiếp Tục
             </button>
@@ -256,6 +254,32 @@
             {
                 q: "Dựa vào Ga-la-ti 3:11, một người được xưng công bình trước mặt Chúa là bởi điều gì?",
                 opts: ["Luật pháp", "Việc làm", "Đức tin", "Sự dâng hiến"],
+                ans: 2
+            },
+            // --- 5 CÂU HỎI MỚI BỔ SUNG ---
+            {
+                q: "Theo Ma-thi-ơ 10:42, việc cho một người nhỏ uống một chén nước lạnh sẽ như thế nào?",
+                opts: ["Sẽ được người đó trả ơn ngay", "Sẽ chẳng mất phần thưởng của mình đâu", "Sẽ được mọi người khen ngợi", "Sẽ không nhận được gì"],
+                ans: 1
+            },
+            {
+                q: "Trong ẩn dụ 10 nữ đồng trinh, hình ảnh 'dầu' biểu tượng cho điều gì?",
+                opts: ["Tình yêu thương", "Đức Thánh Linh", "Chức vụ thầy tế lễ", "Việc lành"],
+                ans: 1
+            },
+            {
+                q: "Trong ẩn dụ quản gia bất trung, người nợ dầu thiếu 100 thùng, quản gia bảo viết lại bao nhiêu?",
+                opts: ["80 thùng", "25 thùng", "50 thùng", "Không giảm"],
+                ans: 2
+            },
+            {
+                q: "Mục đích Chúa Giê-xu phán ẩn dụ 'Quan án không công bình' là nhằm nhắc môn đồ phải làm gì luôn?",
+                opts: ["Tìm lý lẽ cho mình", "Bỏ qua sự công bình", "Tìm quan án", "Cầu nguyện"],
+                ans: 3
+            },
+            {
+                q: "Theo lời người cha trong ẩn dụ Con Trai Hoang Đàng, lý do vì sao cả nhà nên dọn tiệc vui mừng?",
+                opts: ["Người em đem tiền về", "Người em hứa không bỏ đi nữa", "Vì em đã chết mà lại sống, đã mất mà lại thấy được", "Vì anh cả làm xong việc"],
                 ans: 2
             }
         ];
@@ -347,7 +371,7 @@
                 modal.classList.add('hide');
                 if (modalCallback) {
                     const tempCallback = modalCallback;
-                    modalCallback = null; // Xóa callback cũ TRƯỚC KHI gọi hàm mới để tránh xung đột
+                    modalCallback = null;
                     tempCallback();
                 }
             }, 150);
@@ -378,8 +402,8 @@
         function loadG1Question() {
             if (currentG1Index >= game1Data.length) {
                 showModal('info', 'Hoàn Thành!', 'Bạn đã hoàn thành Đường Đua Ta-lâng!', 
-                          `<div class="text-amber-500"><i class="fa-solid fa-coins"></i> Tổng tài sản: ${talents} Ta-lâng</div>`, 
-                          'Về Trang Chủ', 'bg-tmg-primary hover:bg-tmg-dark', returnToMenu);
+                        `<div class="text-amber-500"><i class="fa-solid fa-coins"></i> Tổng tài sản: ${talents} Ta-lâng</div>`, 
+                        'Về Trang Chủ', 'bg-tmg-primary hover:bg-tmg-dark', returnToMenu);
                 return;
             }
 
@@ -401,14 +425,13 @@
                 `;
             });
 
-            // Reset bet slider
             betSlider.max = Math.max(1, talents);
             betSlider.value = 1;
             betDisplay.innerText = "1 Ta-lâng";
         }
 
         function submitGame1() {
-            if (currentG1Index >= game1Data.length) return; // Chốt chặn an toàn
+            if (currentG1Index >= game1Data.length) return;
 
             const selected = document.querySelector('input[name="g1-ans"]:checked');
             if (!selected) {
@@ -421,24 +444,24 @@
             const correctIdx = game1Data[currentG1Index].ans;
 
             if (ansIdx === correctIdx) {
-                talents += bet; // Double the bet (return bet + profit) -> net is +bet
+                talents += bet;
                 updateStatus();
                 showModal('success', 'Chính Xác!', 'Bạn đã trả lời đúng.', 
-                          `<div class="text-emerald-500">+${bet} Ta-lâng</div>`, 
-                          'Tiếp Tục', 'bg-emerald-500 hover:bg-emerald-600', nextG1);
+                        `<div class="text-emerald-500">+${bet} Ta-lâng</div>`, 
+                        'Tiếp Tục', 'bg-emerald-500 hover:bg-emerald-600', nextG1);
             } else {
                 talents -= bet;
                 if (talents <= 0) {
-                    talents = 1; // Charity logic
+                    talents = 1;
                     updateStatus();
                     showModal('error', 'Sai Rồi!', `Đáp án đúng là: ${game1Data[currentG1Index].opts[correctIdx]}`, 
-                              `<div class="text-rose-500">Trắng tay! Hệ thống cấp 1 Ta-lâng từ thiện.</div>`, 
-                              'Ngậm ngùi đi tiếp', 'bg-rose-500 hover:bg-rose-600', nextG1);
+                            `<div class="text-rose-500">Trắng tay! Hệ thống cấp 1 Ta-lâng từ thiện.</div>`, 
+                            'Ngậm ngùi đi tiếp', 'bg-rose-500 hover:bg-rose-600', nextG1);
                 } else {
                     updateStatus();
                     showModal('error', 'Sai Rồi!', `Đáp án đúng là: ${game1Data[currentG1Index].opts[correctIdx]}`, 
-                              `<div class="text-rose-500">-${bet} Ta-lâng</div>`, 
-                              'Tiếp Tục', 'bg-rose-500 hover:bg-rose-600', nextG1);
+                            `<div class="text-rose-500">-${bet} Ta-lâng</div>`, 
+                            'Tiếp Tục', 'bg-rose-500 hover:bg-rose-600', nextG1);
                 }
             }
         }
@@ -455,7 +478,6 @@
             scoreContainer.classList.remove('hide');
             updateStatus();
             
-            // Build options grid once
             const optsDiv = document.getElementById('g2-options');
             optsDiv.innerHTML = '';
             game2Options.forEach(opt => {
@@ -473,62 +495,50 @@
         function loadG2Round() {
             if (currentG2Index >= game2Data.length) {
                 showModal('info', 'Hoàn Thành!', 'Bạn đã giải mã xong Mật Mã Ẩn Dụ!', 
-                          `<div class="text-emerald-500"><i class="fa-solid fa-star"></i> Tổng điểm: ${score}</div>`, 
-                          'Về Trang Chủ', 'bg-tmg-primary hover:bg-tmg-dark', returnToMenu);
+                        `<div class="text-emerald-500"><i class="fa-solid fa-star"></i> Tổng điểm: ${score}</div>`, 
+                        'Về Trang Chủ', 'bg-tmg-primary hover:bg-tmg-dark', returnToMenu);
                 return;
             }
 
             kwsRevealed = 0;
             document.getElementById('g2-progress').innerText = `Vòng ${currentG2Index + 1}/${game2Data.length}`;
             
-            // Reset UI
             for(let i=1; i<=3; i++) {
                 const kwBox = document.getElementById(`kw-${i}`);
                 kwBox.className = "kw-box bg-slate-100 border-2 border-slate-200 rounded-xl p-4 font-bold text-xl text-slate-400 flex justify-center items-center h-16 transition-all";
-                
                 let pt = (i===1)? 30 : (i===2)? 20 : 10;
                 kwBox.innerHTML = `<span class="text-sm"><i class="fa-solid fa-lock mr-2"></i>Mở bằng ${pt} điểm</span>`;
             }
             document.getElementById('btn-reveal').classList.remove('hide');
-            
-            // Reveal first immediately
             revealNextKeyword();
         }
 
         function revealNextKeyword() {
             if (kwsRevealed >= 3) return;
-            
             kwsRevealed++;
             const data = game2Data[currentG2Index];
             const kwBox = document.getElementById(`kw-${kwsRevealed}`);
-            
             kwBox.className = "kw-box bg-tmg-bg border-2 border-tmg-light/50 rounded-xl p-4 font-bold text-xl text-tmg-primary flex justify-center items-center h-16 shadow-inner fade-in";
             kwBox.innerHTML = data.kws[kwsRevealed - 1];
-
-            if (kwsRevealed === 3) {
-                document.getElementById('btn-reveal').classList.add('hide');
-            }
+            if (kwsRevealed === 3) document.getElementById('btn-reveal').classList.add('hide');
         }
 
         function submitGame2(selectedAnswer) {
-            if (currentG2Index >= game2Data.length) return; // Chốt chặn an toàn
-
             const correctAnswer = game2Data[currentG2Index].ans;
-            
             if (selectedAnswer === correctAnswer) {
                 let pts = (kwsRevealed === 1) ? 30 : (kwsRevealed === 2) ? 20 : 10;
                 score += pts;
                 updateStatus();
                 showModal('success', 'Tuyệt Vời!', `Chính xác! Đáp án là: ${correctAnswer}`, 
-                          `<div class="text-emerald-500">+${pts} Điểm (Mở ${kwsRevealed} từ khóa)</div>`, 
-                          'Vòng Tiếp Theo', 'bg-emerald-500 hover:bg-emerald-600', nextG2);
+                        `<div class="text-emerald-500">+${pts} Điểm</div>`, 
+                        'Vòng Tiếp Theo', 'bg-emerald-500 hover:bg-emerald-600', nextG2);
             } else {
                 score -= 10;
                 if(score < 0) score = 0;
                 updateStatus();
                 showModal('error', 'Sai Rồi!', `Rất tiếc. Đáp án đúng là: ${correctAnswer}`, 
-                          `<div class="text-rose-500">-10 Điểm</div>`, 
-                          'Vòng Tiếp Theo', 'bg-rose-500 hover:bg-rose-600', nextG2);
+                        `<div class="text-rose-500">-10 Điểm</div>`, 
+                        'Vòng Tiếp Theo', 'bg-rose-500 hover:bg-rose-600', nextG2);
             }
         }
 
@@ -536,7 +546,6 @@
             currentG2Index++;
             loadG2Round();
         }
-
     </script>
 </body>
 </html>
